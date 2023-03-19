@@ -1,0 +1,80 @@
+/* Student Name : Cynthia Maroupas Student ID: 261119382 Class: CCCS 315-784 */
+/* This project is Part 2 of the first assignment for Data Structures and Algorithm class */
+/*The Data Structures and Algorithms book has helped me understand the proper format and structure for writing doc comments in Java.
+* Also helped me find ideas on how to write comments using the WHAT and not the HOW*/
+
+import java.util.Random; // this creates random for our program
+public class App {
+    /**
+     * This method finds the index of the smallest number in the array.
+     *
+     * @param arr The array to search for the minimum value.
+     * @return The index of the smallest number in the array.
+     */
+    public static int minFinder(int[] arr) {
+        // Initialize the index to track the location of the smallest number
+        int index = 0;
+        // Start with the first number in the array as the smallest number
+        int minValue = arr[0];
+
+        // Loop to iterate through the rest of the elements in the array
+        for (int i = 1; i < arr.length; i++) {
+            // If a smaller number is found, update the smallest number and its location
+            if (arr[i] < minValue) {
+                minValue = arr[i];
+                index = i;
+            }
+        }
+        //once you find the minimum value, return the index of it in the array
+        return index;
+    }
+    /**
+     * This method finds the index of the minimum value in an array using recursion.
+     *
+     * @param arr The input array to find the minimum element in.
+     * @param startIndex The starting index of the portion of the array to search in.
+     * @param endIndex The ending index of the portion of the array to search in.
+     * @return The index of the minimum value in the portion of the array.
+     */
+    public static int minFinder_recursive(int[] arr, int startIndex, int endIndex) {
+        int index = startIndex;
+        int minimumValue = arr[startIndex];
+
+        // If the start and end indices are the same, return the current index
+        if (startIndex== endIndex) {
+            return index;
+        }
+
+        // Finds the minimum element in the sub-array using recursion
+        int minIndex = minFinder_recursive(arr, startIndex + 1, endIndex);
+
+        // compare the current element with the minimum from the sub-array
+        // and update the current minimum and its index if necessary
+        if (arr[minIndex] < minimumValue) {
+
+            minimumValue = arr[minIndex];
+
+            index = minIndex;
+        }
+
+        return index;
+    }
+     public static void main(String[] args) throws Exception {
+        int[] myArr = new int[100];
+        Random myRand = new Random(); // creating Random object
+        // Range for random to select from
+        int min = 5;
+        int max = 1000;
+
+        int indexMin = 0;
+
+        for (int i = 0; i < myArr.length; i++) {
+            myArr[i] = myRand.nextInt(max - min + 1) + min; // storing random integers in an array
+        }
+        // here we check the last item of array to see if it is full:
+        System.out.println(myArr[myArr.length - 1]); // printing last element, not the biggest or smallest but just the last one
+        //now we find the minimum calling the function you wrote:
+        indexMin = minFinder(myArr);
+        System.out.println("The minimum is at location: " + indexMin + " The value is: " + myArr[indexMin]);
+    }
+}
