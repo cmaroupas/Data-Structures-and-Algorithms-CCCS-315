@@ -1,0 +1,298 @@
+/* Student Name : Cynthia Maroupas Student ID: 261119382 Class: CCCS 315-784 */
+/*
+This is the MyLinkedList Main class used to test all the methods.
+The Data Structures and Algorithms book has helped me understand the proper format and structure for writing doc comments in Java.
+ */
+public class Main {
+    public static void main(String[] args) {
+
+        MyLinkedList list = new MyLinkedList();
+
+// Testing add method adding elements to the head of the list
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        System.out.println("Testing the add Function: " + list);
+
+// Testing addAfter method adding a value after a specified value, if does not exist then add to tail, if multiple add it after the first occurrence
+        list.addAfter(9, 4);
+        System.out.println("Testing the addAfter Function: " + list);
+        MyLinkedList otherList = new MyLinkedList();
+
+// Testing remove method removing an element from the list, if multiple same values remove the first occurrence
+        list.remove(3);
+        System.out.println("Testing the remove Function: " + list);
+
+// Testing size method that returns the size of the linked list, if empty return 0
+        System.out.println("Size of the List: " + list.size());
+
+// Testing contains method determining whether an element is present in the list
+        System.out.println("Does it contain 9?: " + list.contains(9));
+        System.out.println("Does it contain 7?: " + list.contains(7));
+
+
+// Testing the toString method by calling it and printing the output
+        String output = list.toString();
+        System.out.println("toString Output: " + output);
+
+        // Compare the output to the expected output
+        String expectedOutput = "5 -> 4 -> 3 -> 2 -> 1 -> ";
+        if (output.equals(expectedOutput)) {
+            System.out.println("toString test passed!");
+        } else {
+            System.out.println("toString test failed.");
+        }
+
+// Testing the compare method comparing the two lists to see if they have the same value
+        System.out.println("Are the Lists Equal?: " + list.compare(otherList));
+
+// Testing the addInOrder method adding elements in order
+        list.addInOrder(4);
+        list.addInOrder(2);
+        list.addInOrder(1);
+        list.addInOrder(3);
+        list.addInOrder(5);
+        System.out.println("Testing the addInOrder Function: " + list);
+
+// Test adding elements to the second list
+        otherList.add(3);
+        otherList.add(5);
+        otherList.add(8);
+        otherList.add(6);
+        otherList.add(9);
+
+    }
+}
+
+/* Student Name : Cynthia Maroupas Student ID: 261119382 Class: CCCS 315-784 */
+/*
+Assignment One, Part 1: Linked List
+This class implements a Singly Linked List Data Structure.
+*/
+class MyLinkedList {
+    private Node firstNode; // head of the Linked List
+    private int listSize; // size of the Linked List
+
+    /**
+     * Constructor for the MyLinkedList class, initializes head and size.
+     */
+    public MyLinkedList() {
+        firstNode = null; // initializes the head of the Linked List
+        listSize = 0; // initializes the size of the Linked List
+    }
+
+    /**
+     * The add method adds an element to the beginning of the Linked List.
+     *
+     * @param element - the value of the new Node to be added
+     */
+    public void add(int element) {
+        Node nodeToAdd = new Node(element);
+        nodeToAdd.next = firstNode;
+        firstNode = nodeToAdd;
+        listSize++;
+    }
+
+    /**
+     * The addToTail method appends a new node to the end of the linked list.
+     *
+     * @param e - The value of the node to be added
+     */
+    public void addToTail(int e) {
+        // Creating a node with value "e"
+        Node newNode = new Node(e);
+        // If the linked list is empty, set the new node as the first
+        if (firstNode == null) {
+            firstNode = newNode;
+        } else {
+            // Find the last node in the Linked list
+            Node currentNode = firstNode;
+            while (currentNode.next != null) {
+                currentNode = currentNode.next;
+            }
+            // Append the new node to the end of the Linked list
+            currentNode.next = newNode;
+        }
+        // Increase the size of the linked list
+        listSize++;
+    }
+
+    /**
+     * The addAfter method inserts a new node with the given value after a node with a specified value in the Linked List.
+     *
+     * @param element  - the value of the new node to be inserted.
+     * @param afterInt - the value of the node after which the new node will be inserted.
+     */
+    public void addAfter(int element, int afterInt) {
+
+        Node currentNode = firstNode; // Start from the head of the linked list
+
+        // Loop through the linked list until the specified node is found
+
+        while (currentNode != null && currentNode.value != afterInt) {
+            currentNode = currentNode.next;
+        }
+        // If the specified node is unable to be found
+
+        if (currentNode != null) {
+            Node newNode = new Node(element); // Create a new node with the given value
+            newNode.next = currentNode.next; // Connect the new node's next reference to the next node after the current node
+            currentNode.next = newNode; // Update the current node's next reference to now point to the new node
+            listSize++; // Increment the size of the linked list by 1
+        }
+        // If the specified node is not found, add the new node to the tail of the linked list
+        else {
+            addToTail(element);
+        }
+    }
+
+    /**
+     * The remove method removes the first occurrence of a specified value from the Linked List
+     *
+     * @param target - the value of the Node to be removed from the Linked list
+     */
+    public void remove(int target) {
+        Node currentNode = firstNode;
+        // check if the first node is the one to be removed
+        if (currentNode != null && currentNode.value == target) {
+            firstNode = currentNode.next; //Updating the head of the Linked list
+            listSize--; //Decrement the size of the linked list by 1
+            return;
+        }
+        // Iterate through the list to find the node to be removed
+        while (currentNode != null && currentNode.next != null) {
+            if (currentNode.next.value == target) {
+
+                // remove the first occurrence of the value
+                currentNode.next = currentNode.next.next;
+                listSize--;
+                return;
+            }
+            currentNode = currentNode.next;
+        }
+    }
+
+    /**
+     * The size method returns the size of the Linked List
+     *
+     * @return - the size of the Linked List
+     */
+    public int size() {
+
+        return listSize;
+    }
+
+    /**
+     * The contains method determines if a specified value is present in the linked list
+     *
+     * @param value - the value to be checked for
+     * @return - true if the value is present in the Linked List, false otherwise
+     */
+    public boolean contains(int value) {
+        // Start from the first node
+        Node currentNode = firstNode;
+        // Iterate through the linked list until the value is found or the end of the list is reached
+        while (currentNode != null) {
+            // Check if the current node's value is equal to the target value
+            if (currentNode.value == value) {
+                // Return true if found
+                return true;
+            }
+            // Moving on to the next node
+            currentNode = currentNode.next;
+        }
+        // Return false if the value is not found
+        return false;
+    }
+
+    /**
+     * The toString method generates a string representation of the elements in the linked list.
+     *
+     * @return - A string that contains the values of all nodes in the linked list, separated by " -> ".
+     */
+    public String toString() {
+        // Initialize the string to be returned
+        String output = "";
+        // Start from the first node in the linked list
+        Node currentNode = firstNode;
+        // Iterate through the linked list
+        while (currentNode != null) {
+            // Add the value of the current node to the output string
+            output += currentNode.value + " -> ";
+            // Moving on to the next node
+            currentNode = currentNode.next;
+        }
+        // Return the final string representation
+        return output;
+    }
+
+    /**
+     * The compare method performs a comparison between this Linked List and another Linked List.
+     *
+     * @param otherList - The Linked List to compare against.
+     * @return true if both Linked Lists contain the same elements in the same order, false otherwise.
+     */
+    public boolean compare(MyLinkedList otherList) {
+        // Begin the comparison with the first node of this linked list
+        Node currentNodeOne = firstNode;
+        // Retrieve the first node of the other linked list for comparison
+        Node currentNodeTwo = otherList.firstNode;
+        // Compare the elements in the linked lists
+        while (currentNodeOne != null && currentNodeTwo != null) {
+            // If the elements don't match, the comparison is over and the result is false
+            if (currentNodeOne.value != currentNodeTwo.value) {
+                return false;
+            }
+            // Move on to the next node in both linked lists for comparison
+            currentNodeOne = currentNodeOne.next;
+            currentNodeTwo = currentNodeTwo.next;
+        }
+        // If both linked lists contain the same number of elements and the elements are the same, the result is true
+        return currentNodeOne == null && currentNodeTwo == null;
+    }
+
+    /**
+     * The addInOrder method adds an element to the Linked List in ascending order.
+     *
+     * @param element - The element to add to the Linked List.
+     */
+    public void addInOrder(int element) {
+        // if head is null or head is greater than new element, add to the start
+        if (firstNode == null || firstNode.value > element) {
+            add(element);
+            return;
+        }
+        // Find the node before the point of insertion
+        Node currentNode = firstNode;
+        // find the correct position to insert new element
+        while (currentNode.next != null && currentNode.next.value < element) {
+            currentNode = currentNode.next;
+        }
+        //inserting the element
+        Node newNode = new Node(element);
+        newNode.next = currentNode.next;
+        currentNode.next = newNode;
+        listSize++;
+    }
+}
+/* Student Name : Cynthia Maroupas Student ID: 261119382 Class: CCCS 315-784 */
+/*
+This Node class represents a node in a Singly Linked List.
+Each node contains an int value and a reference to the next node in the list
+*/
+public class Node {
+    int value; // variable used to store the value of a node
+    Node next; // variable holding a reference to the subsequent node in the list
+
+    /**
+     * This constructor initializes the value and next properties of the Node
+     *
+     * @param value the value to be stored in the Node
+     */
+    public Node(int value) {
+        this.value = value; // initializes the value of the node
+        next = null; // sets the reference to the next node as null
+    }
+}
